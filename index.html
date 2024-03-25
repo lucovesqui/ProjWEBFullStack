@@ -8,7 +8,24 @@
 </head>
 <body>
     <div id="container">
+        <div id="filter">
+            <input type="text" id="search-input" placeholder="Search by name...">
+            <button id="search-button">Procurar</button>
+            <select id="type-filter">
+                <option value="all types">Todos</option>
+                <option value="Fire">Fogo</option>
+                <option value="Water">Agua</option>
+                <option value="Grass">Planta</option>
+                <option value="Lightning">Eletrico</option>
+                <option value="Fighting">Lutador</option>
+                <option value="Darkness">Escuridão</option>
+                <option value="Psychic">Psíquico</option>
+            </select>
             <button id="filter-button">Filtrar</button>
+            <p id="error-message"></p>
+        </div>
+        <div id="card-container"></div>
+        <div id="card-details"></div>
     </div>
     <script src="src/scripts.js" type="module"></script>
 </body>
