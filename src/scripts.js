@@ -3,6 +3,7 @@ import { fetchPokemonCards, searchPokemon, filterPokemon } from './api.js';
 document.addEventListener("DOMContentLoaded", () => {
     const cardContainer = document.getElementById("card-container");
     const cardDetails = document.getElementById("card-details");
+    const listaHistorico = document.getElementById("search-history"); 
 
     async function renderCards(cards) {
         cardContainer.innerHTML = "";
@@ -67,11 +68,12 @@ document.addEventListener("DOMContentLoaded", () => {
             const cards = await fetchPokemonCards();
             const filteredCards = cards.filter(card => card.name.toLowerCase().includes(searchInput));
             renderCards(filteredCards);
-            errorMessageElement.textContent = ""; //Limpa a mensagem de erro
+            errorMessageElement.textContent = ""; 
         } catch (error) {
             console.error("Error fetching cards:", error.message);
             errorMessageElement.textContent = error.message;
         }
+        atualizaLista(searchInput); 
     }
 
     async function filterPokemon() {
@@ -92,8 +94,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     return false;
                 });
             }
+
             renderCards(filteredCards);
             errorMessageElement.textContent = "";
+            
         } catch (error) {
             console.error("Error fetching cards:", error.message);
             errorMessageElement.textContent = error.message;
@@ -110,8 +114,35 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    function atualizaLista(searchInput) {
+        let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+
+        searchHistory.unshift(searchInput);
+
+        const maxHistoryLength = 10;
+        searchHistory = searchHistory.slice(0, maxHistoryLength);
+
+        localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+
+        renderListaHistorico(searchHistory);
+    }
+
+    function renderListaHistorico(searchHistory) {
+        listaHistorico.innerHTML = "";
+
+        searchHistory.forEach(searchItem => {
+            const listItem = document.createElement("li");
+            listItem.textContent = searchItem;
+            listaHistorico.appendChild(listItem);
+        });
+    }
+
+    renderListaHistorico(JSON.parse(localStorage.getItem("searchHistory")) || []);
+
     fetchAndRenderCards();
 
     document.getElementById("search-button").addEventListener("click", searchPokemon);
-    document.getElementById("filter-button").addEventListener("click", filterPokemon);
+    document.getElementById("filter-button").addEventListener("click", filterPokemon)
+
 });
+
