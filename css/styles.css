@@ -17,8 +17,9 @@ h1 {
 
 #search,
 #filter {
+    margin-left: 600px;
     margin-bottom: 20px;
-    display: flex;
+    display: block;
     justify-content: center;
 }
 
